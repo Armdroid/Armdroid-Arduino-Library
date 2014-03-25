@@ -1,5 +1,5 @@
 /*
- * Armdroid Serial Controller Sketch
+ * Armdroid Serial Driver Sketch
  * Copyright (C) Richard Morris 2014 - http://armdroid1.blogspot.co.uk
  *
  * 1.0 Initial version
