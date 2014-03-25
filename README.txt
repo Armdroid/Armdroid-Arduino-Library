@@ -11,7 +11,7 @@ execution, then please let me know and I may decide to support your board in a
 forthcoming release.
 
 The SerialDriver example sketch is included with this library.   This is a complete,
-ready to use embedded Armdroid controller that responds to commands sent by USB/Serial
+ready to use embedded Armdroid driver program that responds to commands sent by USB/Serial
 and manipulates the joints.
 
 If, like me, your using the Arduino Leonardo board and intend communicating using hardware
