@@ -25,7 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "Armdroid.h"
 
 
-// macro to make motor address according to interface type
+// macro to make motor addresses according to interface type
 #ifndef INTERFACE_PROTOTYPE
 // standard addressing
 #define MK_MTR_ADDR(x) (x << 1)
