@@ -25,7 +25,7 @@ regularly for latest news, updates, and projects centered around this library.
 
 
 Written by Richard Morris
-Refer to the included license.txt for licensing information
+Refer to the included LICENSE for licensing information
 
 
 INSTALLATION
