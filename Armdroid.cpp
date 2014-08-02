@@ -287,7 +287,7 @@ void ArmBase::torqueMotors(boolean torqueEnabled)
 {
   for(uint8_t motor = 0; motor < 6; motor++)
   {
-    MTR_CTRL* const mtr_ctrl = &mtr_control_table[ motor - 1 ];
+    MTR_CTRL* const mtr_ctrl = &mtr_control_table[ motor ];
     
     // combine with coils off pattern + control bits if disabling holding torque, otherwise
     // reinstate coil pattern from last step index
