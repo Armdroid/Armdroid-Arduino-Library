@@ -6,6 +6,7 @@
  * 1.1 Added variable speed control
  * 1.2 Added support for driving multiple motors
  * 1.3 Moved all Armdroid routines into new class library
+ * 1.4 Added Torque control enhancements
  */
 
 #include "Armdroid.h"
@@ -125,9 +126,16 @@ void loop()
       Serial.println(rxCmdVal);
       rxCmdVal = 0;
     }
+    else if (ch == 't') {
+      // torque enablement
+      myArm.torqueMotors( (boolean) rxCmdVal );
+      Serial.print("torque = ");
+      Serial.println(rxCmdVal ? "enabled" : "disabled");
+      rxCmdVal = 0;
+    }
     else if (ch == 'v') {
       // returns firmware/protocol version
-      Serial.println("version = 1.3");
+      Serial.println("firmware version = 2.0/protocol = 1.0a");
     }
   }
 }
