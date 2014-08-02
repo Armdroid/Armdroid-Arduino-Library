@@ -8,7 +8,8 @@
 #define ID35_STEPS  48                    // number of steps/revolution
 #define STROBE      0x01                  // output (from microcontroller) LOW
                                           // input (to microcontroller) HIGH
-                                                  
+#define FREEARM     0xF0                  // pattern for motors off
+
 #define CDIR        0x10                  // direction bit (prototype models only)
 #define CCLK        0x20                  // clock         (prototype models only)
 
@@ -29,6 +30,9 @@ public:
   // main mover methods:
   void driveMotor(uint8_t motor, int16_t steps);
   void driveAllMotors(MTR_CHANNELS channels);
+  
+  // torque control
+  void torqueMotors(boolean torqueEnabled);
 
 protected:
   // This MUST be defined by the subclass:
@@ -37,8 +41,8 @@ protected:
 private:
   void pulse_stepper_motor(MTR_CTRL *mtr_ctrl);
   
-  uint32_t step_interval;      // interval between steps, in milliseconds based on speed
-  uint32_t previous_time;      // time in milliseconds when last step was taken
+  unsigned long step_interval;      // interval between steps, in milliseconds based on speed
+  unsigned long previous_time;      // time in milliseconds when last step was taken
 };
 
 

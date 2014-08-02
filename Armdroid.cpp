@@ -116,8 +116,8 @@ void Armdroid::armdroid_write(uint8_t output)
  */
 ArmBase::ArmBase(void)
 {
-  this->step_interval = 83;
-  this->previous_time = 0;
+  this->previous_time = 0UL;
+  setSpeed(100);
 }
 
 /*
@@ -183,11 +183,13 @@ void ArmBase::driveMotor(uint8_t motor, int16_t steps)
   mtr_ctrl->steps_left = abs(steps);
   mtr_ctrl->dir = (steps > 0);
   
+  unsigned long current_time = 0UL;
+  
   while ( mtr_ctrl->steps_left > 0 )
   {
     // pulse motor only if the appropriate delay has passed:
-    const uint32_t current_time = millis();
-    if (current_time - previous_time >= step_interval)
+    current_time = millis();
+    if ((current_time - previous_time) >= step_interval)
     {
       // save last time we stepped the motor
       previous_time = current_time;
@@ -246,17 +248,18 @@ void ArmBase::driveAllMotors(MTR_CHANNELS channels)
 #endif
   }
   
+  unsigned long current_time = 0UL;
   MTR_CTRL* mtr_ctrl;
   
   const uint16_t * const total_steps_left = &mtr_control_table[max_step_index].steps_left;
   while ( *total_steps_left > 0 )
   {
     // wait until appropriate delay has passed:
-    const uint32_t current_time = millis();
-    if (current_time - previous_time >= this->step_interval)
+    current_time = millis();
+    if ((current_time - previous_time) >= step_interval)
     {
       // save last time we stepped the motor
-      this->previous_time = current_time;
+      previous_time = current_time;
      
       // step active channels  
       for(uint8_t motor=0; motor<6; motor++)
@@ -265,7 +268,6 @@ void ArmBase::driveAllMotors(MTR_CHANNELS channels)
         if ( mtr_ctrl->steps_left > 0 )
         {
           pulse_stepper_motor( mtr_ctrl );
-          delay( 1 );
         }
       }
     }
@@ -273,6 +275,33 @@ void ArmBase::driveAllMotors(MTR_CHANNELS channels)
   
   // ensure Armdroid is returned to Input mode
   armdroid_write( STROBE );  
+}
+
+/*
+ * Allows the user to manually reposition all joints
+ * by freeing holding torque.
+ *
+ * To free motors, call with torqueEnabled = false 
+ */
+void ArmBase::torqueMotors(boolean torqueEnabled)
+{
+  for(uint8_t motor = 0; motor < 6; motor++)
+  {
+    MTR_CTRL* const mtr_ctrl = &mtr_control_table[ motor - 1 ];
+    
+    // combine with coils off pattern + control bits if disabling holding torque, otherwise
+    // reinstate coil pattern from last step index
+    const uint8_t output = (torqueEnabled ? mtr_waveform_table[ mtr_ctrl->step_index ] : FREEARM) + mtr_ctrl->address + STROBE;
+    
+    // write command to Armdroid port
+    armdroid_write( output );
+    armdroid_write( output - STROBE );
+    
+    delay(1);
+  }
+  
+  // ensure Armdroid is returned to Input mode
+  armdroid_write( STROBE );
 }
 
 /*
@@ -314,6 +343,7 @@ void ArmBase::pulse_stepper_motor(MTR_CTRL *mtr_ctrl)
   // write command to Armdroid port
   armdroid_write( output );
   armdroid_write( output - STROBE );
+  //delay(1);
   
   // decrement steps remaining
   mtr_ctrl->steps_left--;
