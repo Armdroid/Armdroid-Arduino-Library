@@ -137,6 +137,14 @@ void loop()
       // returns firmware/protocol version
       Serial.println("firmware version = 2.0/protocol = 1.0a");
     }
+    else if (ch == 'V') {
+      // returns interface this firmware was configured to use
+#ifdef INTERFACE_PROTOTYPE
+      Serial.println("interface = logic-drive");
+#else
+      Serial.println("interface = direct-drive");
+#endif
+    }
   }
 }
 
