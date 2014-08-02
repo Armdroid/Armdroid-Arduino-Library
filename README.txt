@@ -34,3 +34,13 @@ folder Armdroid
 
 Place the Armdroid library folder in your <arduinosketchfolder>/libraries/ folder.  You
 may need to create the libraries subfolder if its your first library.  Restart the IDE
+
+
+TROUBLESHOOTING
+
+Stepper motors not running smoothly, or momentarily change direction
+- try removing IC5 (74LS366) if installed, I am still investigating this issue.
+
+Welcome message not shown when connecting an Arduino Uno
+- i've had reports this message is not shown on startup, probably sometime to do with the
+  changes in USB support and auto reset.  Serial driver should still function.
