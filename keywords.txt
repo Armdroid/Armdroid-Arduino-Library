@@ -1,0 +1,29 @@
+#######################################
+# Armdroid Library Syntax Coloring
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Armdroid		KEYWORD1
+MTR_CHANNELS		KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+setSpeed		KEYWORD2
+getOffsets		KEYWORD2
+resetOffsetCounts	KEYWORD2
+driveMotor		KEYWORD2
+driveAllMotors		KEYWORD2
+torqueMotors		KEYWORD2
+
+######################################
+# Instances (KEYWORD2)
+#######################################
+
+#######################################
+# Constants (LITERAL1)
+#######################################
