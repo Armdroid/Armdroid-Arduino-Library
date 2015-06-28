@@ -44,3 +44,10 @@ Stepper motors not running smoothly, or momentarily change direction
 Welcome message not shown when connecting an Arduino Uno
 - i've had reports this message is not shown on startup, probably sometime to do with the
   changes in USB support and auto reset.  Serial driver should still function.
+  
+The IRcontroller example has finally been added to the examples directory, although I've
+not had any success trying to compile with Arduino IDE 1.6.0 because of a library incompatibility.
+Suggest you compile using 1.0.6 until a solution has been found.
+
+The YunWebController example requires Arduino 1.6.0 or above to support the Arduino Yun board.
+
