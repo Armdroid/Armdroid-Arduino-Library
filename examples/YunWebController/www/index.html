@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="initial-scale = 1.0,maximum-scale = 2.0" />
+<head>
+  <title>Armdroid</title>
+  <style>
+     input[type="submit"] {
+       min-width: 50px;
+     }
+     form {
+       display: inline-block;
+     }
+     table {
+       display: inline-block;
+     }
+     td:nth-child(1) {
+       width: 100px;
+     }
+  </style>
+</head>
+<body>
+    <br>
+    <table>
+    <tr>
+    <td>
+        Base:
+    </td>
+
+    <td>
+    <form action="/arduino/armdroid/base/position/35" method="post" target="redirectSink">
+      <input type="submit" value="+">
+      </input>
+    </form>
+    </td>
+
+    <td>
+    <form action="/arduino/armdroid/base/position/-35" method="post" target="redirectSink">
+      <input type="submit" value="-">
+      </input>
+    </form>
+    </td>
+
+    </tr>
+    </table>
+
+    <br>
+    <table>
+    <tr>
+    <td>
+        Shoulder:
+    </td>
+
+    <td>
+    <form action="/arduino/armdroid/shoulder/position/-35" method="post" target="redirectSink">
+      <input type="submit" value="+">
+      </input>
+    </form>
+    </td>
+
+    <td>
+    <form action="/arduino/armdroid/shoulder/position/35" method="post" target="redirectSink">
+      <input type="submit" value="-">
+      </input>
+    </form>
+    </td>
+
+    </tr>
+    </table>
+
+    <br>
+    <table>
+    <tr>
+    <td>
+        Elbow:
+    </td>
+
+    <td>
+    <form action="/arduino/armdroid/elbow/position/35" method="post" target="redirectSink">
+      <input type="submit" value="+">
+      </input>
+    </form>
+    </td>
+
+	<td>
+    <form action="/arduino/armdroid/elbow/position/-35" method="post" target="redirectSink">
+      <input type="submit" value="-">
+      </input>
+    </form>
+	</td>
+
+    </tr>
+    </table>
+
+    <br>
+    <table>
+    <tr>
+    <td>
+        Pitch:
+    </td>
+
+    <td>
+    <form action="/arduino/armdroid/wrist/pitch/35" method="post" target="redirectSink">
+      <input type="submit" value="+">
+      </input>
+    </form>
+    </td>
+
+	<td>
+    <form action="/arduino/armdroid/wrist/pitch/-35" method="post" target="redirectSink">
+      <input type="submit" value="-">
+      </input>
+    </form>
+    </td>
+
+    </tr>
+    </table>
+
+    <br>
+    <table>
+    <tr>
+    <td>
+        Roll:
+    </td>
+
+    <td>
+    <form action="/arduino/armdroid/wrist/rotate/35" method="post" target="redirectSink">
+      <input type="submit" value="+">
+      </input>
+    </form>
+    </td>
+
+	<td>
+    <form action="/arduino/armdroid/wrist/rotate/-35" method="post" target="redirectSink">
+      <input type="submit" value="-">
+      </input>
+    </form>
+    </td>
+
+    </tr>
+    </table>
+
+    <br>
+    <table>
+    <tr>
+    <td>
+        Gripper:
+    </td>
+
+	<td>
+    <form action="/arduino/armdroid/gripper/position/50" method="post" target="redirectSink">
+      <input type="submit" value="+">
+      </input>
+    </form>
+    </td>
+
+    <td>
+    <form action="/arduino/armdroid/gripper/position/-50" method="post" target="redirectSink">
+      <input type="submit" value="-">
+      </input>
+    </form>
+    </td>
+
+    </tr>
+    </table>
+
+    <iframe width="0" height="0" border="0" name="redirectSink" id="redirectSink" style="border:none;"></iframe>
+</body>
+</html>
