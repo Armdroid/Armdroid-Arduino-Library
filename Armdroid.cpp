@@ -1,7 +1,7 @@
 /********************************************************************************
 This is the core Armdroid Library, providing low-level dynamics & control.
  
-Copyright (c) 2014 Richard Morris.  All rights reserved.
+Copyright (c) 2014 - 2015 Richard Morris.  All rights reserved.
 http://armdroid1.blogspot.co.uk
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
