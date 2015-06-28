@@ -1,6 +1,7 @@
 /*
  * Armdroid Serial Driver Sketch
- * Copyright (C) Richard Morris 2014 - http://armdroid1.blogspot.co.uk
+ * Copyright (C) Richard Morris 2014 - 2015.  All Rights Reserved
+ * http://armdroid1.blogspot.co.uk
  *
  * 1.0 Initial version
  * 1.1 Added variable speed control
