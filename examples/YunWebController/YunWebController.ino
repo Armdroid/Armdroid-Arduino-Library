@@ -48,7 +48,7 @@ const int armD8Pin = 9;
 // Create an Armdroid controller object
 Armdroid armdroid(armD1Pin, armD2Pin, armD3Pin, armD4Pin, armD5Pin, armD6Pin, armD7Pin, armD8Pin);
 
-// next revision of Armdroid Library will likly include a method to
+// next revision of Armdroid Library will likely include a method to
 // retrieve the current torque setting, for now, we'll simply maintain a boolean for this purpose:
 bool bTorqued;
 
