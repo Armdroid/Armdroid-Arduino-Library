@@ -20,6 +20,8 @@
    sketch requires the IRremote library downloadable from:
    https://github.com/shirriff/Arduino-IRremote
    
+   for sensor wiring and more information:
+   http://armdroid1.blogspot.co.uk/2015/01/infrared-remote-control.html
 */
 
 #include <Armdroid.h>
