@@ -24,12 +24,12 @@
 // initialize the Armdroid library on pins 2 through 9:
 Armdroid myArm(PIN_D1, PIN_D2, PIN_D3, PIN_D4, PIN_D5, PIN_D6, PIN_D7, PIN_D8);   
 
-// variables for recieving and decoding commands:
+// variables for receiving and decoding commands:
 unsigned int rxCmdPos;
 int rxCmdVal;
 int rxCmdArg[5];
 
-// temporary buffer for string formating:
+// temporary buffer for string formatting:
 char message[80];
 
 void setup()
