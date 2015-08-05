@@ -17,6 +17,9 @@
    
    You can then go to http://192.168.240.1/sd/YunWebController
    to interact with this sketch.
+   
+   for wiring and further information:
+   http://armdroid1.blogspot.co.uk/2015/07/wi-fi-controlled-armdroid.html
 */
 
 
