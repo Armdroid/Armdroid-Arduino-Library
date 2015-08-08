@@ -116,6 +116,7 @@ void Armdroid::armdroid_write(uint8_t output)
  */
 ArmBase::ArmBase(void)
 {
+  this->asyncState    = ASYNC_DRIVE_STOPPED;
   this->previous_time = 0UL;
   setSpeed(100);
 }
@@ -155,7 +156,7 @@ void ArmBase::setSpeed(uint32_t whatSpeed)
 
 /*
  * Drives a single motor channel.
- * steps can be specified +/- for CW/CCW rotations
+ * steps can be specified as +/- for CW/CCW rotations
  */
 void ArmBase::driveMotor(uint8_t motor, int16_t steps)
 {
@@ -208,21 +209,10 @@ void ArmBase::driveMotor(uint8_t motor, int16_t steps)
  * for each channel.
  * zero = motor should not be moved
  */
-void ArmBase::driveAllMotors(MTR_CHANNELS channels)
+void ArmBase::driveAllMotors(MTR_CHANNELS target)
 {
   // setup internal table from channel control structure
-  mtr_control_table[0].steps_left = abs(channels.channel_1);
-  mtr_control_table[0].dir        = (channels.channel_1 > 0);
-  mtr_control_table[1].steps_left = abs(channels.channel_2);
-  mtr_control_table[1].dir        = (channels.channel_2 > 0);
-  mtr_control_table[2].steps_left = abs(channels.channel_3);
-  mtr_control_table[2].dir        = (channels.channel_3 > 0);
-  mtr_control_table[3].steps_left = abs(channels.channel_4);
-  mtr_control_table[3].dir        = (channels.channel_4 > 0);
-  mtr_control_table[4].steps_left = abs(channels.channel_5);
-  mtr_control_table[4].dir        = (channels.channel_5 > 0);
-  mtr_control_table[5].steps_left = abs(channels.channel_6);
-  mtr_control_table[5].dir        = (channels.channel_6 > 0);
+  set_target( target );
   
   // calculate maximum number of steps
   uint16_t max_step_index = 0;
@@ -276,6 +266,79 @@ void ArmBase::driveAllMotors(MTR_CHANNELS channels)
   // ensure Armdroid is returned to Input mode
   armdroid_write( STROBE );  
 }
+
+/*
+ * Drives multiple motors asynchronously
+ */
+void ArmBase::driveMotorsAsynchronous(void)
+{
+	if (isRunning())
+	{
+		unsigned long current_time = millis();
+		if ((current_time - previous_time) >= step_interval)
+    	{
+			previous_time = current_time;
+			
+			uint32_t steps_left = 0;
+			for(uint8_t motor=0; motor<6; motor++)
+			{
+				MTR_CTRL* const mtr_ctrl = &mtr_control_table[ motor ];
+				if ( mtr_ctrl->steps_left > 0 )
+				{
+					pulse_stepper_motor( mtr_ctrl );
+				}
+				
+				steps_left += mtr_ctrl->steps_left;
+			}
+			
+			if (steps_left == 0)
+			{
+				asyncState = ASYNC_DRIVE_STOPPED;
+
+				// ensure Armdroid is returned to Input mode
+  				armdroid_write( STROBE );
+			}
+		}
+	}
+}
+
+bool ArmBase::Start(MTR_CHANNELS target)
+{
+	set_target( target );
+	asyncState = ASYNC_DRIVE_RUNNING;
+	return true;
+}
+
+bool ArmBase::Resume(void)
+{
+	if (asyncState == ASYNC_DRIVE_RUNNING)
+		return true;
+	else if (asyncState == ASYNC_DRIVE_PAUSED)
+	{
+		asyncState = ASYNC_DRIVE_RUNNING;
+		return true;
+	}
+	return false;
+}
+
+bool ArmBase::Pause(void)
+{
+	if (asyncState == ASYNC_DRIVE_PAUSED)
+		return true;
+	else if (asyncState == ASYNC_DRIVE_RUNNING)
+	{
+		asyncState = ASYNC_DRIVE_PAUSED;
+		return true;
+	}
+	return false;
+}
+
+bool ArmBase::Stop(void)
+{
+	asyncState = ASYNC_DRIVE_STOPPED;
+	return true;
+}
+
 
 /*
  * Allows the user to manually reposition all joints
@@ -349,4 +412,21 @@ void ArmBase::pulse_stepper_motor(MTR_CTRL *mtr_ctrl)
   mtr_ctrl->steps_left--;
 }
 
-
+/*
+ * Private method to set channel steps & direction
+ */
+void ArmBase::set_target(MTR_CHANNELS target)
+{
+	mtr_control_table[0].steps_left = abs(target.channel_1);
+	mtr_control_table[0].dir        = (target.channel_1 > 0);
+	mtr_control_table[1].steps_left = abs(target.channel_2);
+	mtr_control_table[1].dir        = (target.channel_2 > 0);
+	mtr_control_table[2].steps_left = abs(target.channel_3);
+	mtr_control_table[2].dir        = (target.channel_3 > 0);
+	mtr_control_table[3].steps_left = abs(target.channel_4);
+	mtr_control_table[3].dir        = (target.channel_4 > 0);
+	mtr_control_table[4].steps_left = abs(target.channel_5);
+	mtr_control_table[4].dir        = (target.channel_5 > 0);
+	mtr_control_table[5].steps_left = abs(target.channel_6);
+	mtr_control_table[5].dir        = (target.channel_6 > 0);
+}

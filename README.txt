@@ -18,6 +18,10 @@ If, like me, your using the Arduino Leonardo board and intend communicating usin
 serial pins (RX pin 0 and TX pin 1) instead of USB/Serial you will need find & replace all
 occurrences of "Serial" and change to "Serial1" before compiling & uploading the Sketch.
 
+UPDATE: 08-Aug-2015
+Finally, Armdroid Library has been updated to support asynchronous operation - this means
+it is now possible to drive multiple motors, and still respond to serial/USB commands, or
+do other processing between pulsing the stepper motors.
 
 More example programs & circuits coming soon!  Do check http://armdroid1.blogspot.co.uk
 regularly for latest news, updates, and projects centered around this Arduino library.
@@ -42,7 +46,7 @@ Stepper motors not running smoothly, or momentarily change direction
 - try removing IC5 (74LS366) if installed, I am still investigating this issue.
 
 Welcome message not shown when connecting an Arduino Uno
-- i've had reports this message is not shown on startup, probably sometime to do with the
+- I've had reports this message is not shown on startup, probably sometime to do with the
   changes in USB support and auto reset.  Serial driver should still function.
   
 The IRcontroller example has finally been added to the examples directory, although I've
