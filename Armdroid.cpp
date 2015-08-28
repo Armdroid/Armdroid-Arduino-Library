@@ -24,7 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include "Armdroid.h"
 
-// un comment for Armdroid 1 prototype models:
+// un-comment the following #define directive for Armdroid 1 prototype models:
 //  1 = use direct drive method (recommended)
 //  2 = use on-board logic drive
 //#define INTERFACE_PROTOTYPE 1
@@ -352,7 +352,9 @@ bool ArmBase::Stop(void)
  */
 void ArmBase::torqueMotors(boolean torqueEnabled)
 {
-#ifndef INTERFACE_PROTOTYPE
+#if defined(INTERFACE_PROTOTYPE) && INTERFACE_PROTOTYPE > 1
+  /* not supported by prototype models in logic drive configuration */
+#else
   for(uint8_t motor = 0; motor < 6; motor++)
   {
     MTR_CTRL* const mtr_ctrl = &mtr_control_table[ motor ];
@@ -379,8 +381,8 @@ void ArmBase::torqueMotors(boolean torqueEnabled)
  */
 void ArmBase::pulse_stepper_motor(MTR_CTRL *mtr_ctrl)
 {
-	// output byte initially contains motor address and strobe HIGH
-	uint8_t output = mtr_ctrl->address + STROBE;
+  // output byte initially contains motor address and strobe HIGH
+  uint8_t output = mtr_ctrl->address + STROBE;
 
 #if defined(INTERFACE_PROTOTYPE) && INTERFACE_PROTOTYPE > 1
   // generate clock pulse for on-board logic drive
@@ -433,16 +435,16 @@ void ArmBase::pulse_stepper_motor(MTR_CTRL *mtr_ctrl)
  */
 void ArmBase::set_target(MTR_CHANNELS target)
 {
-	mtr_control_table[0].steps_left = abs(target.channel_1);
-	mtr_control_table[0].dir        = (target.channel_1 > 0);
-	mtr_control_table[1].steps_left = abs(target.channel_2);
-	mtr_control_table[1].dir        = (target.channel_2 > 0);
-	mtr_control_table[2].steps_left = abs(target.channel_3);
-	mtr_control_table[2].dir        = (target.channel_3 > 0);
-	mtr_control_table[3].steps_left = abs(target.channel_4);
-	mtr_control_table[3].dir        = (target.channel_4 > 0);
-	mtr_control_table[4].steps_left = abs(target.channel_5);
-	mtr_control_table[4].dir        = (target.channel_5 > 0);
-	mtr_control_table[5].steps_left = abs(target.channel_6);
-	mtr_control_table[5].dir        = (target.channel_6 > 0);
+  mtr_control_table[0].steps_left = abs(target.channel_1);
+  mtr_control_table[0].dir        = (target.channel_1 > 0);
+  mtr_control_table[1].steps_left = abs(target.channel_2);
+  mtr_control_table[1].dir        = (target.channel_2 > 0);
+  mtr_control_table[2].steps_left = abs(target.channel_3);
+  mtr_control_table[2].dir        = (target.channel_3 > 0);
+  mtr_control_table[3].steps_left = abs(target.channel_4);
+  mtr_control_table[3].dir        = (target.channel_4 > 0);
+  mtr_control_table[4].steps_left = abs(target.channel_5);
+  mtr_control_table[4].dir        = (target.channel_5 > 0);
+  mtr_control_table[5].steps_left = abs(target.channel_6);
+  mtr_control_table[5].dir        = (target.channel_6 > 0);
 }
