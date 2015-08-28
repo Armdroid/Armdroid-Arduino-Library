@@ -24,6 +24,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include "Armdroid.h"
 
+// un comment for Armdroid 1 prototype models:
+//  1 = use direct drive method (recommended)
+//  2 = use on-board logic drive
+//#define INTERFACE_PROTOTYPE 1
 
 // macro to make motor addresses according to interface type
 #ifndef INTERFACE_PROTOTYPE
@@ -31,7 +35,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define MK_MTR_ADDR(x) (x << 1)
 #else
 // reverse addressing (prototype models only)
-#define MK_MTR_ADDR(x) (((x&1)<<2 + (x&2) + (x&4)>>2) << 1)
+#define MK_MTR_ADDR(x) ((((x&1)<<2) + (x&2) + ((x&4)>>2)) << 1)
 #endif
 
 // motor control table - reassign your motor assignments as necessary
@@ -348,6 +352,7 @@ bool ArmBase::Stop(void)
  */
 void ArmBase::torqueMotors(boolean torqueEnabled)
 {
+#ifndef INTERFACE_PROTOTYPE
   for(uint8_t motor = 0; motor < 6; motor++)
   {
     MTR_CTRL* const mtr_ctrl = &mtr_control_table[ motor ];
@@ -365,6 +370,7 @@ void ArmBase::torqueMotors(boolean torqueEnabled)
   
   // ensure Armdroid is returned to Input mode
   armdroid_write( STROBE );
+#endif
 }
 
 /*
@@ -373,7 +379,26 @@ void ArmBase::torqueMotors(boolean torqueEnabled)
  */
 void ArmBase::pulse_stepper_motor(MTR_CTRL *mtr_ctrl)
 {
-  // calculate next step
+	// output byte initially contains motor address and strobe HIGH
+	uint8_t output = mtr_ctrl->address + STROBE;
+
+#if defined(INTERFACE_PROTOTYPE) && INTERFACE_PROTOTYPE > 1
+  // generate clock pulse for on-board logic drive
+  if (mtr_ctrl->step_index != 0)
+    output += CCLK;
+  mtr_ctrl->step_index = !mtr_ctrl->step_index;
+  // direction control
+  if (mtr_ctrl->dir == 0) {
+    // counter-clockwise
+    mtr_ctrl->offset--;
+    output += CDIR;
+  }
+  else {
+    // clockwise
+    mtr_ctrl->offset++;
+  }
+#else
+  // calculate next step from waveform table
   if (mtr_ctrl->dir == 1) {
     // increment offset counter
     mtr_ctrl->offset++;
@@ -391,22 +416,13 @@ void ArmBase::pulse_stepper_motor(MTR_CTRL *mtr_ctrl)
     mtr_ctrl->step_index--;
   }
 
-#ifdef DEBUG_VERBOSE_TRACE
-  Serial.print(" step_index ");
-  Serial.print( mtr_ctrl->step_index );
-  Serial.print(" waveform ");
-  Serial.print( mtr_waveform_table[ mtr_ctrl->step_index ], BIN);
-  Serial.print(" offset ");
-  Serial.println( mtr_ctrl->offset );
+  // combine motor coil data + control bits
+  output += mtr_waveform_table[ mtr_ctrl->step_index ];
 #endif
 
-  // combine motor coil data + control bits
-  const uint8_t output = mtr_waveform_table[ mtr_ctrl->step_index ] + mtr_ctrl->address + STROBE;
-  
   // write command to Armdroid port
   armdroid_write( output );
   armdroid_write( output - STROBE );
-  //delay(1);
   
   // decrement steps remaining
   mtr_ctrl->steps_left--;
