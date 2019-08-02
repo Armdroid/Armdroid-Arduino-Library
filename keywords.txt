@@ -6,26 +6,26 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-Armdroid		KEYWORD1
-MTR_CHANNELS		KEYWORD1
+Armdroid	KEYWORD1
+MTR_CHANNELS	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
 
-setSpeed		KEYWORD2
-getOffsets		KEYWORD2
+setSpeed	KEYWORD2
+getOffsets	KEYWORD2
 resetOffsetCounts	KEYWORD2
-driveMotor		KEYWORD2
-driveAllMotors		KEYWORD2
+driveMotor	KEYWORD2
+driveAllMotors	KEYWORD2
 driveMotorsAsynchronous KEYWORD2
-getAsyncState		KEYWORD2
-isRunning		KEYWORD2
-Start			KEYWORD2
-Pause			KEYWORD2
-Resume			KEYWORD2
-Stop			KEYWORD2
-torqueMotors		KEYWORD2
+getAsyncState	KEYWORD2
+isRunning	KEYWORD2
+Start	KEYWORD2
+Pause	KEYWORD2
+Resume	KEYWORD2
+Stop	KEYWORD2
+torqueMotors	KEYWORD2
 
 #######################################
 # Instances (KEYWORD2)
@@ -47,9 +47,9 @@ ARM_SHIELD_D8_PIN	LITERAL1
 ARM_AXIS_GRIPPER	LITERAL1
 ARM_AXIS_LEFT_WRIST	LITERAL1
 ARM_AXIS_RIGHT_WRIST	LITERAL1
-ARM_AXIS_ELBOW		LITERAL1
+ARM_AXIS_ELBOW	LITERAL1
 ARM_AXIS_SHOLDER	LITERAL1
-ARM_AXIS_BASE		LITERAL1
+ARM_AXIS_BASE	LITERAL1
 
 ASYNC_DRIVE_RUNNING	LITERAL1
 ASYNC_DRIVE_STOPPED	LITERAL1
